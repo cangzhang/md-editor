@@ -1,5 +1,12 @@
 .App {
-  text-align: center;
+  height: 100vh;
+  background-color: #282c34;
+}
+
+.edit-container {
+  background-color: #ffffff;
+  width: 50%;
+  height: 50%;
 }
 
 .App-logo {
