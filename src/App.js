@@ -1,7 +1,7 @@
-import './App.css';
+import './App.css'
 
-import React from 'react';
-import Editor from './editor';
+import React from 'react'
+import Editor from './editor'
 
 const sleep = (delay, value) => {
   return new Promise(resolve => {
@@ -10,23 +10,23 @@ const sleep = (delay, value) => {
 }
 
 class App extends React.Component {
-
-  onInputChar = () => {
-    return sleep(3000, [])
-      .then(val => {
-        console.log(`val: `, val)
-      })
+  onInputHash = async (char) => {
+    if (char === '#') {
+      console.log(`running promise...`)
+      await sleep(2000)
+      console.log(`promise resolved.`)
+    }
   }
 
   render() {
     return (
-      <div className="App">
+      <div className='App'>
         <Editor
-          onInputChar={this.onInputChar}
+          onInputChar={this.onInputHash}
         />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
