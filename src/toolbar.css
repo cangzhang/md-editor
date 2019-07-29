@@ -1,0 +1,10 @@
+.control-btns ul {
+    list-style: none;
+    border: antiquewhite 1px solid;
+}
+
+.control-btns ul li {
+    display: inline-block;
+    width: 20px;
+    cursor: pointer;
+}

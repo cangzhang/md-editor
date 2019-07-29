@@ -3,6 +3,7 @@ import 'draft-js/dist/Draft.css'
 import React from 'react';
 import { Editor, EditorState } from 'draft-js';
 import { isPromise } from './utils'
+import Toolbar from './toolbar'
 
 export default class MyEditor extends React.Component {
   state = {
@@ -30,6 +31,7 @@ export default class MyEditor extends React.Component {
       <div
         className={'edit-container'}
       >
+        <Toolbar />
         <Editor
           editorState={this.state.editorState}
           onChange={this.onChange}
