@@ -2,7 +2,8 @@ import './toolbar.css'
 import React from 'react'
 
 export default class EditorToolbar extends React.Component {
-  insertHeader = () => {
+  insertHeader = ev => {
+    ev.preventDefault()
     this.props.onInsertHeader()
   }
 
@@ -11,7 +12,7 @@ export default class EditorToolbar extends React.Component {
       <div className={'editor-toolbar-container'}>
         <div className={'control-btns'}>
           <ul>
-            <li onClick={this.insertHeader}>H</li>
+            <li onMouseDown={this.insertHeader}>H</li>
             <li>B</li>
             <li>I</li>
           </ul>

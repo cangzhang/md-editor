@@ -1,7 +1,7 @@
 import 'draft-js/dist/Draft.css'
 
 import React from 'react'
-import { Editor, EditorState, Modifier, RichUtils } from 'draft-js'
+import { Editor, EditorState, Modifier, SelectionState } from 'draft-js'
 // import { isPromise } from './utils'
 import Toolbar from './toolbar'
 
@@ -10,7 +10,11 @@ export default class MyEditor extends React.Component {
     editorState: EditorState.createEmpty()
   }
 
-  onChange = (editorState) => this.setState({ editorState })
+  onChange = (editorState) => {
+    this.setState({
+      editorState
+    })
+  }
 
   handleCharInput = (chars, editorState) => {
     const { onInputChar } = this.props
@@ -21,13 +25,8 @@ export default class MyEditor extends React.Component {
   }
 
   onInsertHeader = () => {
-    // this.onChange(
-    //   RichUtils.toggleBlockType(this.state.editorState, 'header-one')
-    // )
-
     const { editorState } = this.state
-    let contentState = editorState.getCurrentContent()
-
+    const contentState = editorState.getCurrentContent()
     const selectionState = editorState.getSelection()
     const anchorKey = selectionState.getAnchorKey()
 
@@ -35,15 +34,30 @@ export default class MyEditor extends React.Component {
     const startOffset = selectionState.getStartOffset()
     const endOffset = selectionState.getEndOffset()
 
-    const hasSelection = startOffset === endOffset
+    const hasSelection = startOffset !== endOffset
+    let cs = null
 
     if (hasSelection) {
+      // const focusOffset = selectionState.getFocusOffset()
+      const focusKey = selectionState.getFocusKey()
       const selectedText = currentContentBlock.getText().slice(startOffset, endOffset)
-      console.log(selectedText)
+      const newTxt = `# ${selectedText} #`
+
+      const ss = SelectionState.createEmpty('header')
+      const updatedSelection = ss.merge({
+        focusKey,
+        focusOffset: 0
+      })
+
+      cs = Modifier.replaceText(contentState, updatedSelection, newTxt)
+      let newState = EditorState.push(editorState, cs, 'insert-characters')
+
+      this.setState({
+        editorState: newState
+      })
     } else {
-      console.log(`no selection`)
-      contentState = Modifier.insertText(contentState, selectionState, `#`)
-      let newState = EditorState.push(editorState, contentState, 'insert-header')
+      cs = Modifier.insertText(contentState, selectionState, ` # `)
+      const newState = EditorState.push(editorState, cs, 'insert-characters')
       this.setState({
         editorState: newState
       })
