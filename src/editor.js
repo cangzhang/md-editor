@@ -2,7 +2,6 @@ import 'draft-js/dist/Draft.css'
 
 import React from 'react'
 import { Editor, EditorState, Modifier, SelectionState } from 'draft-js'
-// import { isPromise } from './utils'
 import Toolbar from './toolbar'
 
 export default class MyEditor extends React.Component {
@@ -28,9 +27,11 @@ export default class MyEditor extends React.Component {
     const { editorState } = this.state
     const contentState = editorState.getCurrentContent()
     const selectionState = editorState.getSelection()
+    
     const anchorKey = selectionState.getAnchorKey()
+    const startKey = selectionState.getStartKey()
 
-    const currentContentBlock = contentState.getBlockForKey(anchorKey)
+    const contentBlock = contentState.getBlockForKey(anchorKey)
     const startOffset = selectionState.getStartOffset()
     const endOffset = selectionState.getEndOffset()
 
@@ -40,16 +41,17 @@ export default class MyEditor extends React.Component {
     if (hasSelection) {
       // const focusOffset = selectionState.getFocusOffset()
       const focusKey = selectionState.getFocusKey()
-      const selectedText = currentContentBlock.getText().slice(startOffset, endOffset)
+      const txt = contentBlock.getText()
+      const selectedText = txt.slice(startOffset, endOffset)
       const newTxt = `# ${selectedText} #`
 
-      const ss = SelectionState.createEmpty('header')
-      const updatedSelection = ss.merge({
-        focusKey,
-        focusOffset: 0
-      })
+      // const ss = SelectionState.createEmpty('header')
+      // const updatedSelection = ss.merge({
+      //   focusKey,
+      //   focusOffset: 0
+      // })
 
-      cs = Modifier.replaceText(contentState, updatedSelection, newTxt)
+      cs = Modifier.replaceText(contentState, selectionState, newTxt)
       let newState = EditorState.push(editorState, cs, 'insert-characters')
 
       this.setState({
