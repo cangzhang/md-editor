@@ -6,7 +6,7 @@
 .pnp.js
 
 # testing
-/coverage
+/coverage 222
 
 # production
 /build
@@ -28,7 +28,7 @@ yarn-error.log*
 
 # dependencies
 /node_modules
-/.pnp
+/.pnp 222
 .pnp.js
 
 # testing
